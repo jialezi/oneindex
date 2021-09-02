@@ -91,6 +91,12 @@ class view {
 		exit();
 	}
 
+	static function json($name,$size,$url,$preview) {
+	    header("Content-type:application/json");
+	    echo '{"name":"'.$name.'","size":"'.$size.'","url":"'.$url.'","preview":"'.$preview.'"}';
+		exit();
+	}
+	
 	static function abort() {
 		header("HTTP/1.1 502 Bad Gateway");
 		exit();

@@ -142,6 +142,76 @@
 			return @$data[$size]['url'];
 		}
 
+		static function upload_large_file($localfile, $remotepath){
+			fetch::init([CURLOPT_TIMEOUT=>200]);
+			$upload = config('@upload');
+			$info = $upload[$remotepath];
+			if(empty($info['url'])){
+				print ' 创建上传会话'.PHP_EOL;
+				$data = self::create_upload_session($remotepath);
+				if(!empty($data['uploadUrl'])){
+					$info['url'] = $data['uploadUrl'];
+					$info['localfile'] = $localfile;
+					$info['remotepath'] = $remotepath;
+					$info['filesize'] = onedrive::_filesize($localfile);
+					$info['offset'] = 0;
+					$info['length'] = 327680;
+					$info['update_time'] = time();
+					$upload[$remotepath] = $info;
+					config('@upload', $upload);
+				}elseif ( $data === false ){
+					print ' 文件已存在!'.PHP_EOL;
+					return;
+				}
+			}
+			
+			if(empty($info['url'])){
+				print ' 获取会话失败！'.PHP_EOL;
+				sleep(3);
+				return self::upload_large_file($localfile, $remotepath);
+			}
+			
+			print ' 上传分块'.self::human_filesize($info['length']).'	';
+			$begin_time = microtime(true);
+			$data = self::upload_session($info['url'], $info['localfile'], $info['offset'], $info['length']);
+
+			if(!empty($data['nextExpectedRanges'])){
+				$upload_time = microtime(true) - $begin_time;
+				$info['speed'] = $info['length']/$upload_time;
+				print self::human_filesize($info['speed']).'/s'.'	'.round(($info['offset']/$info['filesize'])*100).'%	'.PHP_EOL;
+				$info['length'] = intval($info['length']/$upload_time/32768*2)*327680;
+				$info['length'] = ($info['length']>104857600)?104857600:$info['length'];
+				
+				list($offset, $filesize) = explode('-',$data['nextExpectedRanges'][0]);
+				$info['offset'] = $offset;
+				$info['update_time'] = time();
+				$upload[$remotepath] = $info;
+				config('@upload', $upload);
+			}elseif(!empty($data['@content.downloadUrl']) || !empty($data['id'])){
+				unset($upload[$remotepath]);
+				config('@upload', $upload);
+				print ' 上传完成！'.PHP_EOL;
+				return;
+			}else{
+				print ' 失败!'.PHP_EOL;
+				$data = self::upload_session_status($info['url']);
+				if(empty($data)|| $info['length']<100){
+					self::delete_upload_session($info['url']);
+					unset($upload[$remotepath]);
+					config('@upload', $upload);
+				}elseif(!empty($data['nextExpectedRanges'])){
+					list($offset, $filesize) = explode('-',$data['nextExpectedRanges'][0]);
+					$info['offset'] = $offset;
+					$info['length'] = $info['length']/1.5;
+					$upload[$remotepath] = $info;
+					config('@upload', $upload);
+				}
+			}
+
+			return self::upload_large_file($localfile, $remotepath);
+			
+		}	
+		
 		//文件上传函数
 		static function upload($path,$content){
 			$request = self::request($path,"content");

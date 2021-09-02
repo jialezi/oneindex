@@ -10,9 +10,7 @@ $downloadUrl = $item['downloadUrl'];
 <?php view::begin('content');?>
 <div class="mdui-container-fluid">
     <div class="nexmoe-item">
-	<img class="mdui-img-fluid mdui-center" style="max-height: -webkit-fill-available;" src="<?php e($downloadUrl);?>"/>
-	<br>
-      
+	<img class="mdui-img-fluid mdui-center" style="max-height:700px;margin:10px auto;" src="<?php e($downloadUrl);?>"/>
 	<div class="mdui-textfield">
 	  <label class="mdui-textfield-label">下载地址</label>
 	  <input class="mdui-textfield-input" type="text" value="<?php e($url);?>"/>

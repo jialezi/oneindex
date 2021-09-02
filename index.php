@@ -49,13 +49,12 @@ define('VIEW_PATH', ROOT.'view/'.(config('style')?config('style'):'material').'/
  */
 $images = config('images@base');
 if( ($_COOKIE['admin'] == md5(config('password').config('refresh_token')) || $images['public']) ){
+	route::any('/upload','ImagesController@upload');
 	route::any('/images','ImagesController@index');
 	if($images['home']){
 		route::any('/','ImagesController@index');
 	}
 }
-
-
 /**
  *    列目录
  */

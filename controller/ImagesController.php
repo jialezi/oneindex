@@ -10,21 +10,31 @@ class ImagesController{
             return $randomString;
         }
 	
-	function index(){
+	function upload(){
 		if($this->is_image($_FILES["file"]) ){
-			$content = file_get_contents( $_FILES["file"]['tmp_name']);
+			$content =  $_FILES["file"]['tmp_name'];
 			$remotepath =  'images/'.date('Y/m/d/').$this->generateRandomString(10).'/';
 			$remotefile = $remotepath.$_FILES["file"]['name'];
-			$result = onedrive::upload(config('onedrive_root').$remotefile, $content);
-			
-			if($result){
+			ob_start(); 
+			$result = onedrive::upload_large_file($content,config('onedrive_root').$remotefile);
+			ob_end_clean(); 
+			//if($result){
 				$root = get_absolute_path(dirname($_SERVER['SCRIPT_NAME'])).config('root_path');
 				$http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
-				$url = $_SERVER['HTTP_HOST'].$root.'/'.$remotefile.((config('root_path') == '?')?'&s':'?s');
+				$pre = $_SERVER['HTTP_HOST'].$root.'/'.$remotefile.((config('root_path') == '?')?'&s':'?s');
+				$pre = $http_type.str_replace('//','/', $pre);
+				$url = $_SERVER['HTTP_HOST'].$root.'/'.$remotefile;
 				$url = $http_type.str_replace('//','/', $url);
-				view::direct($url);
-			}
+
+				//view::direct($url);
+				view::json($_FILES["file"]['name'],$_FILES["file"]['size'],$url,$pre);
+			//}
 		}
+		return view::direct('/images');
+		//return view::load('images/index');
+	}
+    
+    function index(){
 		return view::load('images/index');
 	}
 

@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.2/dist/jquery.fancybox.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 	<link rel="shortcut icon" href="https://image.suning.cn/uimg/ZR/share_order/158562104413864293.jpg">
-    <link rel="stylesheet" href="/view/nexmoe/app.css">
+    <link rel="stylesheet" href="view/nexmoe/app.css">
 </head>
 <body class=" mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink">
 	<header class="mdui-appbar mdui-appbar-fixed mdui-color-theme mdui-appbar-inset">	
@@ -43,11 +43,11 @@
     	<?php view::section('content');?>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.1/dist/js/mdui.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/sentsin/layer@3.5.0/dist/layer.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.2/dist/jquery.fancybox.min.js"></script>
-<script src="/view/nexmoe/app.js"></script>
+<script src="view/nexmoe/app.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function () {
         jQuery(".fancybox").fancybox();

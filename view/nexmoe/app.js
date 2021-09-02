@@ -1,5 +1,5 @@
 var $$ = mdui.JQ;
-var p = (window.location.pathname.substr(0,3).indexOf('?') != -1)?'&s':'?s';
+var p = (window.location.href.indexOf('/?/') != -1)?'&s':'?s';
 $$(function() {
     $$('.file .iframe').each(function() {
         $$(this).on('click', function() {
