@@ -39,18 +39,19 @@ class ImagesController{
 	}
 
 	function is_image($file){
-        if(!$file){
-            return false;
-        }  
+		if(!$file){
+			return false;
+		}  
 		$config = config('images@base');
 		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 		if(!in_array($ext,$config['exts'])){
+			view::json('不支持该类型文件！',$ext,'','');
 			return false;
 		}
-		if($file['size'] > 10485760 || $file['size'] == 0){
+		if($file['size'] > 104857600 || $file['size'] == 0){
+			view::json('超过单文件大小限制！',$file["size"],'','');
 			return false;
 		}
-
 		return true;
 	}
 }

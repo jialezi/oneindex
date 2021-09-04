@@ -118,10 +118,11 @@
 .thumb .mdui-list-item span{
 	float: left;
 	display: block;
-        text-align: center;
+    text-align: center;
 	width:100%;
 	position: absolute;
-    top: 260px;
+	top: 200px;
+    left: -1px;
 }
 .thumb .forcedownload {
     display: none; 
