@@ -39,6 +39,9 @@ class ImagesController{
 	}
 
 	function is_image($file){
+        if(!$file){
+            return false;
+        }  
 		$config = config('images@base');
 		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 		if(!in_array($ext,$config['exts'])){

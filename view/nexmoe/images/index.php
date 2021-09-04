@@ -46,7 +46,7 @@
 		<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
 		<script>document.write(returnCitySN["cname"])</script>  
 		© 
-		<a style="text-decoration:none;" href="https://api.xkx.me/">更多：xKx.Me
+		<a style="text-decoration:none;" href="https://api.xkx.me/">更多：xKx.Me</a>
 		</p>
 		</div>
 		</div>
